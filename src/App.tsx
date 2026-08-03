@@ -1,13 +1,21 @@
 import React from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import HomePage from './pages/HomePage'
+import HistoryPage from './pages/HistoryPage'
 
-function App() {
+export default function App() {
   return (
-    <div className="min-h-screen bg-page">
-      <h1 className="text-center text-3xl font-display font-bold py-10 text-primary">
-        AI Background Remover
-      </h1>
-    </div>
+    <BrowserRouter>
+      <div className="min-h-screen bg-page flex flex-col">
+        <Navbar />
+        <Routes>
+          <Route path="/"        element={<HomePage />} />
+          <Route path="/history" element={<HistoryPage />} />
+          {/* Catch-all — redirect to home */}
+          <Route path="*"        element={<HomePage />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   )
 }
-
-export default App
