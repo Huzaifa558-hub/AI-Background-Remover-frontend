@@ -1,4 +1,3 @@
-import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import ThemeToggle from './ThemeToggle'
 
@@ -27,7 +26,7 @@ export default function Navbar() {
         </Link>
 
         {/* Nav links */}
-        <nav className="flex items-center gap-1" aria-label="Main navigation">
+        <nav className="flex items-center gap-1 overflow-x-auto" aria-label="Main navigation">
           <NavLink
             to="/"
             end
@@ -42,6 +41,86 @@ export default function Navbar() {
             {({ isActive }) => (
               <>
                 Upload
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-magenta" aria-hidden="true" />
+                )}
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/enhance"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:shadow-focus ${
+                isActive
+                  ? 'text-primary bg-surface-raised'
+                  : 'text-secondary hover:text-primary hover:bg-surface-raised'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Enhance
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-magenta" aria-hidden="true" />
+                )}
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/replace-bg"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:shadow-focus ${
+                isActive
+                  ? 'text-primary bg-surface-raised'
+                  : 'text-secondary hover:text-primary hover:bg-surface-raised'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Replace BG
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-magenta" aria-hidden="true" />
+                )}
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/smart-crop"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:shadow-focus ${
+                isActive
+                  ? 'text-primary bg-surface-raised'
+                  : 'text-secondary hover:text-primary hover:bg-surface-raised'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Smart Crop
+                {isActive && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-magenta" aria-hidden="true" />
+                )}
+              </>
+            )}
+          </NavLink>
+
+          <NavLink
+            to="/batch"
+            className={({ isActive }) =>
+              `relative px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:shadow-focus ${
+                isActive
+                  ? 'text-primary bg-surface-raised'
+                  : 'text-secondary hover:text-primary hover:bg-surface-raised'
+              }`
+            }
+          >
+            {({ isActive }) => (
+              <>
+                Batch
                 {isActive && (
                   <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-magenta" aria-hidden="true" />
                 )}
