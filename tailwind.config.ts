@@ -1,23 +1,5 @@
 import type { Config } from 'tailwindcss';
 
-/**
- * AI Background Remover — Tailwind theme config
- *
- * Maps CSS custom properties from src/theme/tokens.css into Tailwind
- * utilities so components can use classes like:
- *   bg-page, bg-surface, bg-surface-raised
- *   text-primary, text-secondary, text-muted
- *   border-border, border-border-strong
- *   bg-magenta, bg-magenta-hover, text-magenta
- *   bg-teal, bg-teal-hover, text-teal
- *   font-display, font-body, font-mono
- *   rounded-sm, rounded-md, rounded-lg
- *   shadow-focus
- *
- * Dark mode is driven by the data-theme="dark" attribute on <html>
- * (see tokens.css), NOT Tailwind's default `media` strategy.
- * This lets the app control light/dark independently of OS settings.
- */
 const config: Config = {
   darkMode: ['selector', '[data-theme="dark"]'],
 
@@ -30,9 +12,9 @@ const config: Config = {
     extend: {
       colors: {
         /* Surfaces */
-        page:            'var(--bg-page)',
-        surface:         'var(--bg-surface)',
-        'surface-raised':'var(--bg-surface-raised)',
+        page:             'var(--bg-page)',
+        surface:          'var(--bg-surface)',
+        'surface-raised': 'var(--bg-surface-raised)',
 
         /* Text */
         primary:   'var(--text-primary)',
@@ -40,8 +22,8 @@ const config: Config = {
         muted:     'var(--text-muted)',
 
         /* Borders */
-        border:         'var(--border)',
-        'border-strong':'var(--border-strong)',
+        border:          'var(--border)',
+        'border-strong': 'var(--border-strong)',
 
         /* Brand accents */
         magenta: {
@@ -53,12 +35,23 @@ const config: Config = {
           hover:   'var(--accent-teal-hover)',
         },
 
+        /* Gold / Orange accents (dark mode primary) */
+        gold: {
+          DEFAULT: 'var(--accent-gold)',
+          hover:   'var(--accent-gold-hover)',
+          muted:   'var(--accent-gold-muted)',
+        },
+        brand: {
+          DEFAULT: 'var(--accent-orange)',
+          hover:   'var(--accent-orange-hover)',
+        },
+
         /* Semantic */
         danger:  'var(--color-danger)',
         warning: 'var(--color-warning)',
         success: 'var(--color-success)',
 
-        /* Checkerboard tiles (rarely used directly — prefer .bg-checker) */
+        /* Checkerboard tiles */
         'checker-1': 'var(--checker-tile-1)',
         'checker-2': 'var(--checker-tile-2)',
       },
@@ -73,10 +66,47 @@ const config: Config = {
         sm: 'var(--radius-sm)',
         md: 'var(--radius-md)',
         lg: 'var(--radius-lg)',
+        xl: 'var(--radius-xl)',
       },
 
       boxShadow: {
-        focus: 'var(--shadow-focus)',
+        focus:    'var(--shadow-focus)',
+        sm:       'var(--shadow-sm)',
+        md:       'var(--shadow-md)',
+        lg:       'var(--shadow-lg)',
+        glow:     'var(--shadow-glow)',
+        'glow-sm':'var(--shadow-glow-sm)',
+      },
+
+      backgroundImage: {
+        'gradient-hero':  'var(--gradient-hero)',
+        'gradient-brand': 'var(--gradient-brand)',
+      },
+
+      keyframes: {
+        'pulse-glow': {
+          '0%, 100%': { boxShadow: '0 0 8px rgba(245,158,11,0.20)' },
+          '50%':       { boxShadow: '0 0 24px rgba(245,158,11,0.50)' },
+        },
+        'border-spin': {
+          '0%':   { backgroundPosition: '0% 50%' },
+          '50%':  { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+        'fade-up': {
+          from: { opacity: '0', transform: 'translateY(12px)' },
+          to:   { opacity: '1', transform: 'translateY(0)' },
+        },
+        shimmer: {
+          '0%':   { backgroundPosition: '-200% 0' },
+          '100%': { backgroundPosition:  '200% 0' },
+        },
+      },
+      animation: {
+        'pulse-glow':  'pulse-glow 2.5s ease-in-out infinite',
+        'border-spin': 'border-spin 3s linear infinite',
+        'fade-up':     'fade-up 0.4s ease both',
+        shimmer:       'shimmer 2s linear infinite',
       },
     },
   },

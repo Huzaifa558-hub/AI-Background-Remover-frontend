@@ -3,8 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Global base styles ----------
-   Uses tokens from theme/tokens.css so dark mode works automatically.   */
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono&display=swap');
+
+/* ---------- Global base styles ---------- */
 @layer base {
   html {
     font-family: var(--font-body);
@@ -12,11 +14,18 @@
     background-color: var(--bg-page);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-page);
+    min-height: 100vh;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
     color: var(--text-primary);
+    letter-spacing: -0.02em;
   }
 
   code, pre, kbd {
@@ -25,8 +34,137 @@
 
   /* Smooth color transitions when toggling dark mode */
   *, *::before, *::after {
-    transition-property: background-color, border-color, color;
-    transition-duration: 150ms;
+    transition-property: background-color, border-color, color, box-shadow, opacity;
+    transition-duration: 180ms;
     transition-timing-function: ease;
   }
+
+  /* But don't slow down transforms/animations */
+  .animate-spin,
+  .animate-pulse,
+  .animate-pulse-glow,
+  .animate-fade-up {
+    transition: none !important;
+  }
+}
+
+/* ---------- Component utilities ---------- */
+@layer components {
+
+  /* Primary CTA button — maps to gold in dark, magenta in light */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-md
+           bg-magenta hover:bg-magenta-hover text-white
+           font-medium text-sm transition-colors
+           focus:outline-none focus:shadow-focus;
+  }
+
+  /* Ghost / outline button */
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-md
+           border border-border hover:border-border-strong
+           text-secondary hover:text-primary
+           font-medium text-sm transition-colors
+           focus:outline-none focus:shadow-focus;
+  }
+
+  /* Subtle input/surface card */
+  .card {
+    @apply bg-surface border border-border rounded-lg shadow-sm;
+  }
+
+  /* Premium card with hover lift */
+  .card-hover {
+    @apply card transition-all duration-200
+           hover:shadow-md hover:-translate-y-0.5;
+  }
+
+  /* Badge / chip */
+  .chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1
+           bg-surface border border-border rounded-full
+           text-xs text-muted font-medium;
+  }
+
+  /* Gold gradient text (dark mode hero) */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Magenta gradient text (light mode hero) */
+  .text-gradient-brand {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ---------- Dark mode page background texture ---------- */
+[data-theme='dark'] body {
+  background-image: radial-gradient(ellipse at 20% 50%, rgba(245,158,11,0.03) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(249,115,22,0.03) 0%, transparent 60%);
+}
+
+/* ---------- Scrollbar styling ---------- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-page);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* ---------- Range input styling ---------- */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 4px;
+  cursor: pointer;
+}
+input[type='range']::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 99px;
+  background: var(--border-strong);
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-magenta);
+  border: 2px solid var(--bg-surface);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  margin-top: -7px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+input[type='range']::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px rgba(245,158,11,0.2);
+}
+input[type='range']::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--accent-magenta);
+  border: 2px solid var(--bg-surface);
+  cursor: pointer;
+}
+
+/* ---------- Selection colour ---------- */
+::selection {
+  background: var(--accent-gold);
+  color: #080808;
 }

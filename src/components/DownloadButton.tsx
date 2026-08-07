@@ -10,7 +10,14 @@ export default function DownloadButton({ downloadUrl, filename = 'result.png' }:
     <a
       href={downloadUrl}
       download={filename}
-      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-md bg-teal hover:bg-teal-hover text-white font-medium text-sm transition-colors focus:outline-none focus:shadow-focus"
+      className="
+        inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-medium text-sm
+        bg-teal hover:bg-teal-hover text-white
+        shadow-sm hover:shadow-md
+        transition-all duration-200
+        focus:outline-none focus:shadow-focus
+        active:scale-95
+      "
       aria-label={`Download ${filename}`}
     >
       <svg

@@ -3,19 +3,15 @@
    Concept: "Darkroom / Lightbox"
    Signature motif: the alpha-transparency checkerboard
 
-   Usage:
-   - Imported once globally in main.tsx
-   - Toggle dark mode by setting data-theme="dark" on <html>
-   - Never hardcode hex values in components — always reference
-     these custom properties (or the Tailwind utilities mapped
-     from them in tailwind.config.ts)
+   Light mode: warm paper tones with magenta + teal accents
+   Dark mode:  pure black with gold/orange premium accents
    ========================================================= */
 
 :root {
   /* ---------- Surfaces ---------- */
-  --bg-page:           #F3F4F1;   /* warm paper */
-  --bg-surface:        #FFFFFF;   /* cards, panels, canvas */
-  --bg-surface-raised: #FFFFFF;
+  --bg-page:           #F3F4F1;
+  --bg-surface:        #FFFFFF;
+  --bg-surface-raised: #F8F8F6;
 
   /* ---------- Text ---------- */
   --text-primary:   #14161A;
@@ -26,11 +22,18 @@
   --border:        #E3E2DC;
   --border-strong: #C9C8C1;
 
-  /* ---------- Accents ---------- */
-  --accent-magenta:       #E8336D;   /* "mask magenta" — processing / primary CTA */
+  /* ---------- Accents (Light mode) ---------- */
+  --accent-magenta:       #E8336D;
   --accent-magenta-hover: #D12A5F;
-  --accent-teal:          #2FBFB0;   /* "alpha teal" — success / done states */
+  --accent-teal:          #2FBFB0;
   --accent-teal-hover:    #26A99B;
+
+  /* ---------- Gold (inactive in light mode, defined for compatibility) ---------- */
+  --accent-gold:          #F59E0B;
+  --accent-gold-hover:    #D97706;
+  --accent-gold-muted:    #FDE68A;
+  --accent-orange:        #F97316;
+  --accent-orange-hover:  #EA6B0F;
 
   /* ---------- Semantic ---------- */
   --color-danger:  #E24B4A;
@@ -51,46 +54,76 @@
   --radius-sm: 6px;
   --radius-md: 10px;
   --radius-lg: 16px;
+  --radius-xl: 24px;
 
-  /* ---------- Shadows (used sparingly — flat design) ---------- */
-  --shadow-focus: 0 0 0 2px var(--accent-magenta);
+  /* ---------- Shadows ---------- */
+  --shadow-focus:   0 0 0 2px var(--accent-magenta);
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --shadow-md:      0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+  --shadow-lg:      0 10px 30px rgba(0,0,0,0.12), 0 4px 8px rgba(0,0,0,0.08);
+  --shadow-glow:    0 0 20px rgba(232,51,109,0.25);
+
+  /* ---------- Gradients ---------- */
+  --gradient-hero:    linear-gradient(135deg, #fdf4f7 0%, #f3f4f1 50%, #f0faf9 100%);
+  --gradient-brand:   linear-gradient(135deg, var(--accent-magenta) 0%, var(--accent-teal) 100%);
 }
 
 /* ============================================================
-   Dark mode overrides
-   Activated by setting data-theme="dark" on <html> or <body>.
-   ThemeToggle.tsx: document.documentElement.dataset.theme = 'dark' | 'light'
+   Dark mode — Black + Gold/Orange premium palette
+   Activated by data-theme="dark" on <html>
    ============================================================ */
 [data-theme='dark'] {
   /* ---------- Surfaces ---------- */
-  --bg-page:           #0E1013;   /* near-black ink */
-  --bg-surface:        #17191D;
-  --bg-surface-raised: #1D2024;
+  --bg-page:           #080808;   /* true black */
+  --bg-surface:        #111111;   /* near-black cards */
+  --bg-surface-raised: #1A1A1A;   /* raised panels */
 
   /* ---------- Text ---------- */
-  --text-primary:   #EDEEF0;
-  --text-secondary: #A9ABAF;
-  --text-muted:     #6E7075;
+  --text-primary:   #F5F0E8;      /* warm white */
+  --text-secondary: #A8A090;      /* warm grey */
+  --text-muted:     #5C5648;      /* dark warm grey */
 
   /* ---------- Borders ---------- */
-  --border:        #26292E;
-  --border-strong: #33363C;
+  --border:        #2A2418;       /* dark gold-tinted border */
+  --border-strong: #3D3520;       /* stronger gold-tinted border */
 
-  /* ---------- Accents (unchanged — brand consistency across modes) ---------- */
-  --accent-magenta:       #E8336D;
-  --accent-magenta-hover: #F04C80;
-  --accent-teal:          #2FBFB0;
-  --accent-teal-hover:    #45D0C1;
+  /* ---------- Gold/Orange accents (primary in dark mode) ---------- */
+  --accent-gold:          #F59E0B;   /* amber gold */
+  --accent-gold-hover:    #FBBF24;   /* brighter gold on hover */
+  --accent-gold-muted:    #78490A;   /* dark gold for subtle fills */
+  --accent-orange:        #F97316;   /* vivid orange */
+  --accent-orange-hover:  #FB923C;   /* lighter orange on hover */
+
+  /* ---------- Magenta/Teal (secondary in dark mode) ---------- */
+  --accent-magenta:       #F59E0B;   /* remapped to gold for consistency */
+  --accent-magenta-hover: #FBBF24;
+  --accent-teal:          #F97316;   /* remapped to orange for consistency */
+  --accent-teal-hover:    #FB923C;
+
+  /* ---------- Semantic ---------- */
+  --color-danger:  #F87171;
+  --color-warning: #FBBF24;
+  --color-success: #34D399;
 
   /* ---------- Checkerboard motif ---------- */
-  --checker-tile-1: #1F2226;
-  --checker-tile-2: #26292E;
+  --checker-tile-1: #111111;
+  --checker-tile-2: #1A1A1A;
+
+  /* ---------- Shadows (gold glow in dark mode) ---------- */
+  --shadow-focus:   0 0 0 2px var(--accent-gold);
+  --shadow-sm:      0 1px 3px rgba(0,0,0,0.5);
+  --shadow-md:      0 4px 12px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,158,11,0.06);
+  --shadow-lg:      0 10px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(245,158,11,0.08);
+  --shadow-glow:    0 0 30px rgba(245,158,11,0.20), 0 0 60px rgba(245,158,11,0.10);
+  --shadow-glow-sm: 0 0 12px rgba(245,158,11,0.30);
+
+  /* ---------- Gradients ---------- */
+  --gradient-hero:    linear-gradient(135deg, #0f0d09 0%, #080808 50%, #0a0d0c 100%);
+  --gradient-brand:   linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-orange) 100%);
 }
 
 /* ============================================================
-   Reusable checkerboard background
-   Apply .bg-checker to any element that should signal
-   "transparent area" — image canvas, empty states, skeletons.
+   Checkerboard background utility
    ============================================================ */
 .bg-checker {
   background-image:
@@ -105,4 +138,17 @@
     0 calc(var(--checker-size) / 2),
     calc(var(--checker-size) / 2)  calc(var(--checker-size) / -2),
     calc(var(--checker-size) / -2) 0;
+}
+
+/* ============================================================
+   Glass surface utility (dark mode navbar / modals)
+   ============================================================ */
+.glass {
+  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+}
+
+[data-theme='dark'] .glass {
+  background-color: rgba(8, 8, 8, 0.85);
+  border-color: rgba(245, 158, 11, 0.12);
 }
