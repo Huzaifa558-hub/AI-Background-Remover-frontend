@@ -1,4 +1,3 @@
-import React from 'react'
 import UploadZone from '../components/UploadZone'
 import ImageCanvas from '../components/ImageCanvas'
 import DownloadButton from '../components/DownloadButton'
