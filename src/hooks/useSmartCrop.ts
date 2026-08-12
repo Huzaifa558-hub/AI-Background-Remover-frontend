@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react'
 import axios from 'axios'
+import type { Quality } from './useUpload'
 
 export type CropStatus = 'idle' | 'processing' | 'done' | 'error'
 
@@ -7,6 +8,7 @@ export interface CropSettings {
   paddingPct:  number   // 0.0 – 0.5
   aspectRatio: string   // "free" | "1:1" | "4:3" | etc.
   minSize:     number   // px, 16 – 512
+  quality:     Quality  // "fast" | "quality"
 }
 
 export interface CropResult {
@@ -32,6 +34,7 @@ export const DEFAULT_CROP_SETTINGS: CropSettings = {
   paddingPct:  0.05,
   aspectRatio: 'free',
   minSize:     64,
+  quality:     'fast',
 }
 
 // ── Helper ────────────────────────────────────────────────────────────────
@@ -42,6 +45,7 @@ function buildFormData(file: File, s: CropSettings): FormData {
   fd.append('padding_pct',  String(s.paddingPct))
   fd.append('aspect_ratio', s.aspectRatio)
   fd.append('min_size',     String(s.minSize))
+  fd.append('quality',      s.quality)
   return fd
 }
 

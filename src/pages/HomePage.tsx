@@ -1,6 +1,7 @@
 import UploadZone from '../components/UploadZone'
 import ImageCanvas from '../components/ImageCanvas'
 import DownloadButton from '../components/DownloadButton'
+import QualityToggle from '../components/QualityToggle'
 import { useUpload } from '../hooks/useUpload'
 
 const FEATURE_CHIPS = [
@@ -13,7 +14,7 @@ const FEATURE_CHIPS = [
 ]
 
 export default function HomePage() {
-  const { status, result, originalUrl, error, upload, reset } = useUpload()
+  const { status, result, originalUrl, error, quality, setQuality, upload, reset } = useUpload()
 
   const isUploading = status === 'uploading'
   const isDone      = status === 'success' && result !== null && originalUrl !== null
@@ -43,6 +44,13 @@ export default function HomePage() {
       {!isDone ? (
         <div className="flex flex-col gap-5">
           <UploadZone onFile={upload} disabled={isUploading} />
+
+          {/* Quality selector — shown when idle */}
+          {!isUploading && (
+            <div className="flex justify-center">
+              <QualityToggle value={quality} onChange={setQuality} disabled={isUploading} />
+            </div>
+          )}
 
           {/* Processing state */}
           {isUploading && (
@@ -100,6 +108,11 @@ export default function HomePage() {
                 <path fillRule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zm3.844 4.574a.75.75 0 00-1.188-.918l-3.454 4.472-1.696-1.697a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.124-.096l4.024-5.07z" clipRule="evenodd"/>
               </svg>
               Background removed
+              {result?.quality === 'quality' && (
+                <span className="ml-1 text-xs px-1.5 py-0.5 rounded bg-magenta/10 text-magenta border border-magenta/20">
+                  BiRefNet
+                </span>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <button

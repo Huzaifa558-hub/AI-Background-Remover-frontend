@@ -96,7 +96,7 @@ function UserMenu() {
           {/* Actions */}
           <div className="p-1" role="none">
             <button
-              onClick={() => { setOpen(false); logout(); navigate('/login') }}
+              onClick={() => { setOpen(false); logout().then(() => navigate('/login')) }}
               role="menuitem"
               className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm
                 text-secondary hover:text-danger hover:bg-danger/5 transition-colors text-left"

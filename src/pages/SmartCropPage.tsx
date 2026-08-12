@@ -1,6 +1,7 @@
 import UploadZone from '../components/UploadZone'
 import DownloadButton from '../components/DownloadButton'
 import CropControls from '../components/CropControls'
+import QualityToggle from '../components/QualityToggle'
 import { useSmartCrop } from '../hooks/useSmartCrop'
 
 const FEATURE_CHIPS = [
@@ -191,6 +192,14 @@ export default function SmartCropPage() {
               onReset={resetSettings}
               disabled={isProcessing}
             />
+            {/* Quality selector inside the controls panel */}
+            <div className="mt-5 pt-5 border-t border-border">
+              <QualityToggle
+                value={settings.quality}
+                onChange={q => updateSetting('quality', q)}
+                disabled={isProcessing}
+              />
+            </div>
           </div>
 
           {/* Re-crop button — shown once a file is loaded */}
