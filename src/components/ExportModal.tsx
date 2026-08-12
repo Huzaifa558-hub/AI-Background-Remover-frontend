@@ -155,47 +155,57 @@ export default function ExportModal({
       {/* ── Modal panel ───────────────────────────────────────────────────── */}
       <div
         ref={modalRef}
-        className="relative w-full max-w-sm rounded-2xl border border-border bg-surface shadow-2xl
+        className="relative w-full max-w-md rounded-2xl border border-border bg-surface shadow-2xl
                    animate-fade-up"
-        style={{ boxShadow: '0 24px 64px rgba(0,0,0,0.45)' }}
+        style={{ boxShadow: '0 28px 80px rgba(0,0,0,0.5)' }}
       >
         {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="flex items-center justify-between px-5 pt-5 pb-4
+        <div className="flex items-center justify-between px-6 pt-6 pb-4
                         border-b border-border">
-          <div>
-            <h2
-              id="export-modal-title"
-              className="text-base font-display font-semibold text-primary"
-            >
-              Export Image
-            </h2>
-            <p className="text-xs text-muted mt-0.5">Choose format &amp; quality</p>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-magenta/10 border border-magenta/20
+                            flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                fill="currentColor" className="w-4.5 h-4.5 text-magenta" aria-hidden="true">
+                <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
+                <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
+              </svg>
+            </div>
+            <div>
+              <h2
+                id="export-modal-title"
+                className="text-lg font-display font-bold text-primary leading-tight"
+              >
+                Export Image
+              </h2>
+              <p className="text-xs text-muted mt-0.5">Choose format &amp; quality</p>
+            </div>
           </div>
           <button
             ref={closeRef}
             onClick={onClose}
             aria-label="Close export dialog"
-            className="w-8 h-8 rounded-lg flex items-center justify-center
+            className="w-9 h-9 rounded-xl flex items-center justify-center
                        text-muted hover:text-primary hover:bg-surface-raised
                        transition-colors focus:outline-none focus:shadow-focus"
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-              fill="currentColor" className="w-4 h-4" aria-hidden="true">
+              fill="currentColor" className="w-5 h-5" aria-hidden="true">
               <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
             </svg>
           </button>
         </div>
 
         {/* ── Body ────────────────────────────────────────────────────────── */}
-        <div className="px-5 py-5 flex flex-col gap-5">
+        <div className="px-6 py-6 flex flex-col gap-6">
 
           {/* ── Format tabs ─────────────────────────────────────────────── */}
           <div>
-            <p className="text-xs font-medium text-secondary uppercase tracking-widest mb-2.5">
+            <p className="text-xs font-semibold text-secondary uppercase tracking-widest mb-3">
               Format
             </p>
             <div
-              className="grid grid-cols-3 gap-2"
+              className="grid grid-cols-3 gap-3"
               role="radiogroup"
               aria-label="Export format"
             >
@@ -209,51 +219,54 @@ export default function ExportModal({
                     id={`export-format-${fmt.id}`}
                     onClick={() => setFormat(fmt.id)}
                     className={`
-                      flex flex-col items-center gap-1.5 px-2 py-3 rounded-xl
-                      border text-center transition-all duration-150
+                      flex flex-col items-center gap-2 px-3 py-4 rounded-xl
+                      border-2 text-center transition-all duration-150
                       focus:outline-none focus:shadow-focus
                       ${active
-                        ? 'border-magenta bg-magenta/8 text-magenta'
-                        : 'border-border bg-surface-raised text-secondary hover:border-border-strong hover:text-primary'
+                        ? 'border-magenta bg-magenta/8 text-magenta shadow-sm'
+                        : 'border-border bg-surface-raised text-secondary hover:border-border-strong hover:text-primary hover:bg-surface'
                       }
                     `}
                   >
-                    <span className="text-xl" aria-hidden="true">{fmt.icon}</span>
-                    <span className="text-sm font-semibold">{fmt.label}</span>
-                    <span className="text-[10px] leading-snug opacity-70">{fmt.ext}</span>
+                    <span className="text-3xl leading-none" aria-hidden="true">{fmt.icon}</span>
+                    <span className="text-sm font-bold tracking-wide">{fmt.label}</span>
+                    <span className="text-[11px] font-mono opacity-60">{fmt.ext}</span>
                   </button>
                 )
               })}
             </div>
             {/* Format description */}
-            <p className="mt-2 text-xs text-muted text-center transition-all">
-              {currentFmt.description}
-            </p>
+            <div className="mt-3 text-center">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full
+                               bg-surface-raised border border-border text-xs text-secondary">
+                {currentFmt.description}
+              </span>
+            </div>
           </div>
 
           {/* ── Quality slider ──────────────────────────────────────────── */}
-          <div>
-            <div className="flex items-center justify-between mb-2.5">
-              <p className={`text-xs font-medium uppercase tracking-widest
+          <div className="rounded-xl border border-border bg-surface-raised p-4">
+            <div className="flex items-center justify-between mb-4">
+              <p className={`text-xs font-semibold uppercase tracking-widest
                 ${isLossless ? 'text-muted' : 'text-secondary'}`}>
                 Quality
               </p>
               {isLossless ? (
-                /* Tooltip badge for PNG */
+                /* Lossless badge for PNG */
                 <span
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full
-                             bg-surface-raised border border-border text-[10px] text-muted"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
+                             bg-surface border border-border text-xs text-muted font-medium"
                   title="PNG is lossless — quality setting does not apply"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
-                    fill="currentColor" className="w-3 h-3" aria-hidden="true">
+                    fill="currentColor" className="w-3.5 h-3.5" aria-hidden="true">
                     <path fillRule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
                   </svg>
                   Lossless — N/A
                 </span>
               ) : (
-                <span className="font-mono text-sm font-semibold text-primary tabular-nums">
-                  {quality}%
+                <span className="font-mono text-xl font-bold text-primary tabular-nums">
+                  {quality}<span className="text-sm font-medium text-muted ml-0.5">%</span>
                 </span>
               )}
             </div>
@@ -273,7 +286,7 @@ export default function ExportModal({
                 aria-valuemax={100}
                 aria-valuenow={quality}
                 aria-disabled={isLossless}
-                className={`w-full ${isLossless ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'}`}
+                className={`w-full ${isLossless ? 'opacity-25 cursor-not-allowed' : 'cursor-pointer'}`}
                 style={{
                   background: isLossless
                     ? undefined
@@ -282,61 +295,68 @@ export default function ExportModal({
               />
               {/* Quality labels */}
               {!isLossless && (
-                <div className="flex justify-between mt-1">
-                  <span className="text-[10px] text-muted">Low</span>
-                  <span className="text-[10px] text-muted">High</span>
+                <div className="flex justify-between mt-1.5">
+                  <span className="text-xs text-muted">Low quality</span>
+                  <span className="text-xs text-muted">Best quality</span>
                 </div>
               )}
               {/* PNG lossless note */}
               {isLossless && (
-                <p className="mt-1.5 text-[11px] text-muted text-center">
-                  PNG uses lossless compression — quality does not apply
+                <p className="mt-2 text-xs text-muted text-center leading-relaxed">
+                  PNG uses lossless compression —<br/>quality setting does not apply
                 </p>
               )}
             </div>
           </div>
 
           {/* ── Size estimate ─────────────────────────────────────────────── */}
-          <div className="flex items-center gap-2 rounded-lg bg-surface-raised
-                          border border-border px-3.5 py-2.5">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
-              fill="currentColor" className="w-3.5 h-3.5 text-teal shrink-0" aria-hidden="true">
-              <path d="M3 3.5A1.5 1.5 0 014.5 2h4.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 01.439 1.061V12.5A1.5 1.5 0 0111.5 14h-7A1.5 1.5 0 013 12.5v-9z" />
-            </svg>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted">Estimated size</p>
-              <p className="text-xs font-medium text-primary truncate">{sizeEstimate}</p>
+          <div className="flex items-center gap-3 rounded-xl bg-teal/5
+                          border border-teal/20 px-4 py-3">
+            <div className="w-8 h-8 rounded-lg bg-teal/10 flex items-center justify-center shrink-0">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                fill="currentColor" className="w-4 h-4 text-teal" aria-hidden="true">
+                <path d="M3 3.5A1.5 1.5 0 014.5 2h4.879a1.5 1.5 0 011.06.44l2.122 2.12a1.5 1.5 0 01.439 1.061V12.5A1.5 1.5 0 0111.5 14h-7A1.5 1.5 0 013 12.5v-9z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-xs text-teal/70 font-medium">Estimated file size</p>
+              <p className="text-sm font-semibold text-primary mt-0.5">{sizeEstimate}</p>
             </div>
           </div>
         </div>
 
         {/* ── Footer ──────────────────────────────────────────────────────── */}
-        <div className="px-5 pb-5">
+        <div className="px-6 pb-6 pt-1 flex flex-col gap-2">
           <a
             ref={downloadRef}
             href={buildUrl()}
             download={buildFilename()}
             onClick={onClose}
             className="
-              w-full flex items-center justify-center gap-2
-              px-5 py-3 rounded-xl font-semibold text-sm text-white
+              w-full flex items-center justify-center gap-2.5
+              px-5 py-3.5 rounded-xl font-bold text-sm text-white
               bg-magenta hover:bg-magenta-hover
-              shadow-sm hover:shadow-md
-              transition-all duration-200 active:scale-95
+              shadow-md hover:shadow-lg
+              transition-all duration-200 active:scale-[0.98]
               focus:outline-none focus:shadow-focus
             "
             aria-label={`Download as ${currentFmt.label}`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-              fill="currentColor" className="w-4 h-4" aria-hidden="true">
+              fill="currentColor" className="w-4.5 h-4.5" aria-hidden="true">
               <path d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z" />
               <path d="M3.5 12.75a.75.75 0 00-1.5 0v2.5A2.75 2.75 0 004.75 18h10.5A2.75 2.75 0 0018 15.25v-2.5a.75.75 0 00-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5z" />
             </svg>
-            Download {currentFmt.label}
+            Download as {currentFmt.label}
             {!isLossless && (
-              <span className="opacity-70 font-normal text-xs">({quality}%)</span>
+              <span className="ml-1 opacity-75 font-medium text-xs bg-white/15 px-2 py-0.5 rounded-full">
+                {quality}% quality
+              </span>
             )}
           </a>
+          <p className="text-center text-[11px] text-muted">
+            Saved as <span className="font-mono font-medium text-secondary">{buildFilename()}</span>
+          </p>
         </div>
       </div>
     </div>
