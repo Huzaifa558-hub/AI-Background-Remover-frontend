@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios'
+import { useToast } from './useToast'
 
 export interface HistoryItem {
   upload_id:       string
@@ -9,6 +10,7 @@ export interface HistoryItem {
 }
 
 export function useHistory() {
+  const { showToast } = useToast()
   const [items, setItems]     = useState<HistoryItem[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError]     = useState<string | null>(null)
@@ -30,10 +32,11 @@ export function useHistory() {
     try {
       await axios.delete(`/api/image/${uploadId}`)
       setItems(prev => prev.filter(i => i.upload_id !== uploadId))
+      showToast('Image deleted successfully.', 'success')
     } catch {
-      setError('Could not delete image.')
+      showToast('Could not delete image.', 'error')
     }
-  }, [])
+  }, [showToast])
 
   // Load on mount
   useEffect(() => { fetch() }, [fetch])

@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { ToastProvider } from './contexts/ToastContext'
 import Navbar          from './components/Navbar'
 import ProtectedRoute  from './components/ProtectedRoute'
 
@@ -11,42 +12,45 @@ import ReplaceBgPage from './pages/ReplaceBgPage'
 import SmartCropPage from './pages/SmartCropPage'
 import BatchPage     from './pages/BatchPage'
 import HistoryPage   from './pages/HistoryPage'
+import NotFoundPage  from './pages/NotFoundPage'
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-page flex flex-col">
-          <Navbar />
-          <Routes>
-            {/* ── Public routes ──────────────────────────────────────────── */}
-            <Route path="/login"    element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
+        <ToastProvider>
+          <div className="min-h-screen bg-page flex flex-col">
+            <Navbar />
+            <Routes>
+              {/* ── Public routes ──────────────────────────────────────────── */}
+              <Route path="/login"    element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
 
-            {/* ── Protected routes ───────────────────────────────────────── */}
-            <Route path="/" element={
-              <ProtectedRoute><HomePage /></ProtectedRoute>
-            } />
-            <Route path="/enhance" element={
-              <ProtectedRoute><EnhancePage /></ProtectedRoute>
-            } />
-            <Route path="/replace-bg" element={
-              <ProtectedRoute><ReplaceBgPage /></ProtectedRoute>
-            } />
-            <Route path="/smart-crop" element={
-              <ProtectedRoute><SmartCropPage /></ProtectedRoute>
-            } />
-            <Route path="/batch" element={
-              <ProtectedRoute><BatchPage /></ProtectedRoute>
-            } />
-            <Route path="/history" element={
-              <ProtectedRoute><HistoryPage /></ProtectedRoute>
-            } />
+              {/* ── Protected routes ───────────────────────────────────────── */}
+              <Route path="/" element={
+                <ProtectedRoute><HomePage /></ProtectedRoute>
+              } />
+              <Route path="/enhance" element={
+                <ProtectedRoute><EnhancePage /></ProtectedRoute>
+              } />
+              <Route path="/replace-bg" element={
+                <ProtectedRoute><ReplaceBgPage /></ProtectedRoute>
+              } />
+              <Route path="/smart-crop" element={
+                <ProtectedRoute><SmartCropPage /></ProtectedRoute>
+              } />
+              <Route path="/batch" element={
+                <ProtectedRoute><BatchPage /></ProtectedRoute>
+              } />
+              <Route path="/history" element={
+                <ProtectedRoute><HistoryPage /></ProtectedRoute>
+              } />
 
-            {/* ── Catch-all ──────────────────────────────────────────────── */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
+              {/* ── Catch-all ──────────────────────────────────────────────── */}
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </div>
+        </ToastProvider>
       </AuthProvider>
     </BrowserRouter>
   )
