@@ -1,8 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './contexts/AuthContext'
+import { useAuth }      from './hooks/useAuth'
+import { ActiveImageProvider }   from './contexts/ActiveImageContext'
 import { ToastProvider } from './contexts/ToastContext'
 import Navbar          from './components/Navbar'
 import ProtectedRoute  from './components/ProtectedRoute'
+import ChatbotWidget   from './components/ChatbotWidget'
 
 import LoginPage     from './pages/LoginPage'
 import RegisterPage  from './pages/RegisterPage'
@@ -14,42 +17,51 @@ import BatchPage     from './pages/BatchPage'
 import HistoryPage   from './pages/HistoryPage'
 import NotFoundPage  from './pages/NotFoundPage'
 
+function ChatbotWidgetWrapper() {
+  const { user } = useAuth()
+  if (!user) return null
+  return <ChatbotWidget />
+}
+
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
         <ToastProvider>
-          <div className="min-h-screen bg-page flex flex-col">
-            <Navbar />
-            <Routes>
-              {/* ── Public routes ──────────────────────────────────────────── */}
-              <Route path="/login"    element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+          <ActiveImageProvider>
+            <div className="min-h-screen bg-page flex flex-col">
+              <Navbar />
+              <Routes>
+                {/* ── Public routes ──────────────────────────────────────────── */}
+                <Route path="/login"    element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
 
-              {/* ── Protected routes ───────────────────────────────────────── */}
-              <Route path="/" element={
-                <ProtectedRoute><HomePage /></ProtectedRoute>
-              } />
-              <Route path="/enhance" element={
-                <ProtectedRoute><EnhancePage /></ProtectedRoute>
-              } />
-              <Route path="/replace-bg" element={
-                <ProtectedRoute><ReplaceBgPage /></ProtectedRoute>
-              } />
-              <Route path="/smart-crop" element={
-                <ProtectedRoute><SmartCropPage /></ProtectedRoute>
-              } />
-              <Route path="/batch" element={
-                <ProtectedRoute><BatchPage /></ProtectedRoute>
-              } />
-              <Route path="/history" element={
-                <ProtectedRoute><HistoryPage /></ProtectedRoute>
-              } />
+                {/* ── Protected routes ───────────────────────────────────────── */}
+                <Route path="/" element={
+                  <ProtectedRoute><HomePage /></ProtectedRoute>
+                } />
+                <Route path="/enhance" element={
+                  <ProtectedRoute><EnhancePage /></ProtectedRoute>
+                } />
+                <Route path="/replace-bg" element={
+                  <ProtectedRoute><ReplaceBgPage /></ProtectedRoute>
+                } />
+                <Route path="/smart-crop" element={
+                  <ProtectedRoute><SmartCropPage /></ProtectedRoute>
+                } />
+                <Route path="/batch" element={
+                  <ProtectedRoute><BatchPage /></ProtectedRoute>
+                } />
+                <Route path="/history" element={
+                  <ProtectedRoute><HistoryPage /></ProtectedRoute>
+                } />
 
-              {/* ── Catch-all ──────────────────────────────────────────────── */}
-              <Route path="*" element={<NotFoundPage />} />
-            </Routes>
-          </div>
+                {/* ── Catch-all ──────────────────────────────────────────────── */}
+                <Route path="*" element={<NotFoundPage />} />
+              </Routes>
+              <ChatbotWidgetWrapper />
+            </div>
+          </ActiveImageProvider>
         </ToastProvider>
       </AuthProvider>
     </BrowserRouter>

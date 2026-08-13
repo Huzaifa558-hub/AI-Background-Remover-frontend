@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
+import { useActiveImage } from '../contexts/ActiveImageContext'
 
 export type UploadStatus = 'idle' | 'uploading' | 'success' | 'error'
 export type Quality = 'fast' | 'quality'
@@ -16,6 +17,7 @@ export function useUpload() {
   const [originalUrl, setOriginalUrl] = useState<string | null>(null)
   const [error,       setError]       = useState<string | null>(null)
   const [quality,     setQuality]     = useState<Quality>('fast')
+  const { setActiveImage }            = useActiveImage()
 
   const upload = useCallback(async (file: File, overrideQuality?: Quality) => {
     const q = overrideQuality ?? quality
@@ -25,6 +27,7 @@ export function useUpload() {
 
     // Show original image immediately via object URL
     const localUrl = URL.createObjectURL(file)
+    setActiveImage(file, localUrl)
     setOriginalUrl(prev => {
       if (prev) URL.revokeObjectURL(prev)
       return localUrl
@@ -48,17 +51,18 @@ export function useUpload() {
       setError(msg)
       setStatus('error')
     }
-  }, [quality])
+  }, [quality, setActiveImage])
 
   const reset = useCallback(() => {
     setStatus('idle')
     setResult(null)
     setError(null)
+    setActiveImage(null, null)
     setOriginalUrl(prev => {
       if (prev) URL.revokeObjectURL(prev)
       return null
     })
-  }, [])
+  }, [setActiveImage])
 
   return { status, result, originalUrl, error, quality, setQuality, upload, reset }
 }
