@@ -2,16 +2,17 @@ import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useAuth } from '../hooks/useAuth'
+import { useToast } from '../hooks/useToast'
 
 export default function RegisterPage() {
   const { register } = useAuth()
+  const { showToast } = useToast()
   const navigate     = useNavigate()
 
   const [name,     setName]     = useState('')
   const [email,    setEmail]    = useState('')
   const [password, setPassword] = useState('')
   const [confirm,  setConfirm]  = useState('')
-  const [error,    setError]    = useState<string | null>(null)
   const [busy,     setBusy]     = useState(false)
   const [showPwd,  setShowPwd]  = useState(false)
 
@@ -20,19 +21,19 @@ export default function RegisterPage() {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    if (passwordMismatch) { setError('Passwords do not match.'); return }
-    if (passwordWeak)     { setError('Password must be at least 8 characters.'); return }
-    setError(null)
+    if (passwordMismatch) { showToast('Passwords do not match.', 'error'); return }
+    if (passwordWeak)     { showToast('Password must be at least 8 characters.', 'error'); return }
     setBusy(true)
     try {
       await register(name.trim(), email.trim(), password)
+      showToast('Account created successfully. Welcome!', 'success')
       navigate('/', { replace: true })
     } catch (err) {
       const msg =
         axios.isAxiosError(err) && err.response?.data?.detail
           ? String(err.response.data.detail)
           : 'Registration failed. Please try again.'
-      setError(msg)
+      showToast(msg, 'error')
     } finally {
       setBusy(false)
     }
@@ -54,17 +55,6 @@ export default function RegisterPage() {
 
         {/* Card */}
         <div className="rounded-2xl border border-border bg-surface p-8 shadow-sm flex flex-col gap-5">
-
-          {error && (
-            <div role="alert"
-              className="flex items-start gap-2.5 rounded-lg border border-danger/40 bg-danger/5 px-3.5 py-3">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
-                className="w-4 h-4 text-danger shrink-0 mt-0.5" aria-hidden="true">
-                <path fillRule="evenodd" d="M8 1a7 7 0 100 14A7 7 0 008 1zM6.354 5.646a.5.5 0 10-.708.708L7.293 8l-1.647 1.646a.5.5 0 00.708.708L8 8.707l1.646 1.647a.5.5 0 00.708-.708L8.707 8l1.647-1.646a.5.5 0 00-.708-.708L8 7.293 6.354 5.646z" clipRule="evenodd" />
-              </svg>
-              <p className="text-sm text-danger">{error}</p>
-            </div>
-          )}
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
 

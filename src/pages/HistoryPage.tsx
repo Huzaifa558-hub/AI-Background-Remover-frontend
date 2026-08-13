@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import HistoryCard from '../components/HistoryCard'
+import HistorySkeleton from '../components/HistorySkeleton'
 import { useHistory } from '../hooks/useHistory'
 
 export default function HistoryPage() {
@@ -35,14 +36,8 @@ export default function HistoryPage() {
 
       {/* Loading state */}
       {loading && (
-        <div role="status" aria-live="polite" className="flex flex-col items-center gap-4 py-24">
-          <div className="relative w-12 h-12">
-            <svg className="absolute inset-0 w-12 h-12 animate-spin text-magenta" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-              <circle className="opacity-15" cx="24" cy="24" r="20" stroke="currentColor" strokeWidth="4" />
-              <path className="opacity-80" fill="currentColor" d="M44 24a20 20 0 00-20-20v4a16 16 0 0116 16h4z" />
-            </svg>
-          </div>
-          <span className="text-muted text-sm">Loading history…</span>
+        <div className="py-2">
+          <HistorySkeleton />
           <span className="sr-only">Loading history…</span>
         </div>
       )}
