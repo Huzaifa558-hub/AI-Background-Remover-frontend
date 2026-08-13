@@ -1,12 +1,12 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono&display=swap');
+
 /* Tailwind layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ---------- Google Fonts ---------- */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono&display=swap');
 
-/* ---------- Global base styles ---------- */
 @layer base {
   html {
     font-family: var(--font-body);
@@ -32,14 +32,14 @@
     font-family: var(--font-mono);
   }
 
-  /* Smooth color transitions when toggling dark mode */
+ 
   *, *::before, *::after {
     transition-property: background-color, border-color, color, box-shadow, opacity;
     transition-duration: 180ms;
     transition-timing-function: ease;
   }
 
-  /* But don't slow down transforms/animations */
+ 
   .animate-spin,
   .animate-pulse,
   .animate-pulse-glow,
@@ -48,7 +48,7 @@
   }
 }
 
-/* ---------- Component utilities ---------- */
+
 @layer components {
 
   /* Primary CTA button — maps to gold in dark, magenta in light */
@@ -59,7 +59,7 @@
            focus:outline-none focus:shadow-focus;
   }
 
-  /* Ghost / outline button */
+  
   .btn-ghost {
     @apply inline-flex items-center gap-2 px-4 py-2 rounded-md
            border border-border hover:border-border-strong
@@ -68,25 +68,25 @@
            focus:outline-none focus:shadow-focus;
   }
 
-  /* Subtle input/surface card */
+ 
   .card {
     @apply bg-surface border border-border rounded-lg shadow-sm;
   }
 
-  /* Premium card with hover lift */
+  
   .card-hover {
     @apply card transition-all duration-200
            hover:shadow-md hover:-translate-y-0.5;
   }
 
-  /* Badge / chip */
+ 
   .chip {
     @apply inline-flex items-center gap-1 px-2.5 py-1
            bg-surface border border-border rounded-full
            text-xs text-muted font-medium;
   }
 
-  /* Gold gradient text (dark mode hero) */
+  
   .text-gradient-gold {
     background: linear-gradient(135deg, #F59E0B 0%, #F97316 100%);
     -webkit-background-clip: text;
@@ -94,7 +94,8 @@
     background-clip: text;
   }
 
-  /* Magenta gradient text (light mode hero) */
+  
+  
   .text-gradient-brand {
     background: var(--gradient-brand);
     -webkit-background-clip: text;
@@ -103,13 +104,13 @@
   }
 }
 
-/* ---------- Dark mode page background texture ---------- */
+
 [data-theme='dark'] body {
   background-image: radial-gradient(ellipse at 20% 50%, rgba(245,158,11,0.03) 0%, transparent 60%),
                     radial-gradient(ellipse at 80% 20%, rgba(249,115,22,0.03) 0%, transparent 60%);
 }
 
-/* ---------- Scrollbar styling ---------- */
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -125,7 +126,7 @@
   background: var(--text-muted);
 }
 
-/* ---------- Range input styling ---------- */
+
 input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
@@ -163,7 +164,7 @@ input[type='range']::-moz-range-thumb {
   cursor: pointer;
 }
 
-/* ---------- Selection colour ---------- */
+
 ::selection {
   background: var(--accent-gold);
   color: #080808;
