@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import axios from 'axios'
+import { useActiveImage } from '../contexts/ActiveImageContext'
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -44,6 +45,7 @@ export const DEFAULT_BG_SETTINGS: BgSettings = {
 // ── Hook ───────────────────────────────────────────────────────────────────
 
 export function useReplaceBg() {
+  const { setActiveImage } = useActiveImage()
   // Step 1 — remove bg
   const [removeStatus,  setRemoveStatus]  = useState<RemoveStatus>('idle')
   const [removeResult,  setRemoveResult]  = useState<RemoveResult | null>(null)
@@ -80,6 +82,7 @@ export function useReplaceBg() {
     setReplaceStatus('idle')
 
     const localUrl = URL.createObjectURL(file)
+    setActiveImage(file, localUrl)
     setOriginalUrl(prev => { if (prev) URL.revokeObjectURL(prev); return localUrl })
     setRemovedUrl(null)
 
@@ -103,7 +106,7 @@ export function useReplaceBg() {
       setRemoveError(msg)
       setRemoveStatus('error')
     }
-  }, [])
+  }, [setActiveImage])
 
   // ── Step 2: replace background ────────────────────────────────────────
 
@@ -153,9 +156,10 @@ export function useReplaceBg() {
     setRemoveError(null)
     setReplaceError(null)
     setReplaceStatus('idle')
+    setActiveImage(null, null)
     setOriginalUrl(prev => { if (prev) URL.revokeObjectURL(prev); return null })
     setRemovedUrl(null)
-  }, [])
+  }, [setActiveImage])
 
   return {
     // step 1
