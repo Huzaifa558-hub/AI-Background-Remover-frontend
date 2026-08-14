@@ -95,6 +95,23 @@ function UserMenu() {
 
           {/* Actions */}
           <div className="p-1" role="none">
+            {/* Settings */}
+            <button
+              onClick={() => { setOpen(false); navigate('/settings') }}
+              role="menuitem"
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm
+                text-secondary hover:text-primary hover:bg-surface-raised transition-colors text-left"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+                className="w-4 h-4 shrink-0" aria-hidden="true">
+                <path fillRule="evenodd"
+                  d="M6.955 1.45A.5.5 0 017.452 1h1.096a.5.5 0 01.497.45l.17 1.699a5.01 5.01 0 011.322.55l1.423-.866a.5.5 0 01.605.083l.775.775a.5.5 0 01.083.605l-.866 1.423c.23.418.4.865.55 1.322l1.699.17a.5.5 0 01.45.497v1.096a.5.5 0 01-.45.497l-1.699.17a5.014 5.014 0 01-.55 1.322l.866 1.423a.5.5 0 01-.083.605l-.775.775a.5.5 0 01-.605.083l-1.423-.866a5.014 5.014 0 01-1.322.55l-.17 1.699a.5.5 0 01-.497.45H7.452a.5.5 0 01-.497-.45l-.17-1.699a5.014 5.014 0 01-1.322-.55l-1.423.866a.5.5 0 01-.605-.083l-.775-.775a.5.5 0 01-.083-.605l.866-1.423a5.014 5.014 0 01-.55-1.322L1.45 8.549A.5.5 0 011 8.052V6.956a.5.5 0 01.45-.497l1.699-.17c.15-.457.32-.904.55-1.322l-.866-1.423a.5.5 0 01.083-.605l.775-.775a.5.5 0 01.605-.083l1.423.866a5.01 5.01 0 011.322-.55l.17-1.699zM8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z"
+                  clipRule="evenodd" />
+              </svg>
+              Settings
+            </button>
+
+            {/* Sign out */}
             <button
               onClick={() => { setOpen(false); logout().then(() => navigate('/login')) }}
               role="menuitem"

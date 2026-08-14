@@ -19,13 +19,14 @@ export interface AuthUser {
 }
 
 export interface AuthContextValue {
-  user:        AuthUser | null
-  token:       string | null
-  loading:     boolean       // true while validating stored token on mount
-  login:       (email: string, password: string) => Promise<void>
-  register:    (name: string, email: string, password: string) => Promise<void>
-  logout:      () => Promise<void>
-  refreshUser: () => Promise<void>
+  user:          AuthUser | null
+  token:         string | null
+  loading:       boolean       // true while validating stored token on mount
+  login:         (email: string, password: string) => Promise<void>
+  register:      (name: string, email: string, password: string) => Promise<void>
+  logout:        () => Promise<void>
+  refreshUser:   () => Promise<void>
+  updateProfile: (data: Partial<Pick<AuthUser, 'name' | 'email'>>) => void
 }
 
 // ── Storage key ────────────────────────────────────────────────────────────
@@ -248,7 +249,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [_storeToken],
   )
 
-  // ── Refresh user profile ──────────────────────────────────────────────────
+  // ── Refresh user profile ──────────────────────────────────────────────────────
   const refreshUser = useCallback(async () => {
     try {
       const res = await axios.get<AuthUser>('/api/auth/me')
@@ -258,9 +259,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, [logout])
 
+  // ── Update profile in-memory (after a successful PATCH) ───────────────────
+  const updateProfile = useCallback(
+    (data: Partial<Pick<AuthUser, 'name' | 'email'>>) => {
+      setUser(prev => prev ? { ...prev, ...data } : prev)
+    },
+    [],
+  )
+
   return (
     <AuthContext.Provider
-      value={{ user, token, loading, login, register, logout, refreshUser }}
+      value={{ user, token, loading, login, register, logout, refreshUser, updateProfile }}
     >
       {children}
     </AuthContext.Provider>
