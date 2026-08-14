@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+import DOMPurify from 'dompurify'
 import type { Message, ChatResponse, ImageAnalysis, CaptionStyle } from '../types'
 import { chatService } from '../services/chatService'
 import { imageService } from '../services/imageService'
@@ -51,7 +52,12 @@ const formatMessage = (text: string, isUser: boolean) => {
   // Line breaks
   html = html.replace(/\n/g, '<br />')
 
-  return <div dangerouslySetInnerHTML={{ __html: html }} className="space-y-1 text-secondary leading-relaxed" />
+  const safeHtml = DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['h2', 'h3', 'h4', 'strong', 'em', 'code', 'div', 'span', 'br'],
+    ALLOWED_ATTR: ['class'],
+  })
+
+  return <div dangerouslySetInnerHTML={{ __html: safeHtml }} className="space-y-1 text-secondary leading-relaxed" />
 }
 
 function fmtSize(bytes: number) {
