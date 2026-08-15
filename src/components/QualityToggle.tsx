@@ -7,9 +7,10 @@ interface QualityToggleProps {
 }
 
 /**
- * Two-option pill toggle for selecting background-removal quality:
- *   fast    — U2Net (default, quick)
- *   quality — BiRefNet (best edge detail, slower first load)
+ * Three-option pill toggle for selecting background-removal quality:
+ *   fast     — ISNet (default, quickest)
+ *   standard — U²-Net human seg (portrait-optimised, best for people)
+ *   quality  — BiRefNet (best edge detail for anything, slower)
  */
 export default function QualityToggle({ value, onChange, disabled }: QualityToggleProps) {
   return (
@@ -30,7 +31,8 @@ export default function QualityToggle({ value, onChange, disabled }: QualityTogg
             {
               id:          'fast' as Quality,
               label:       'Fast',
-              description: 'U2Net · quick results',
+              description: 'ISNet · quick results',
+              accent:      'text-teal',
               icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
                   fill="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
@@ -39,9 +41,22 @@ export default function QualityToggle({ value, onChange, disabled }: QualityTogg
               ),
             },
             {
+              id:          'standard' as Quality,
+              label:       'Standard',
+              description: 'U²-Net · best for people',
+              accent:      'text-magenta',
+              icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
+                  fill="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
+                  <path d="M8 8a3 3 0 100-6 3 3 0 000 6zM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 00-11.215 0c-.22.578.254 1.139.872 1.139h9.47z"/>
+                </svg>
+              ),
+            },
+            {
               id:          'quality' as Quality,
               label:       'Quality',
               description: 'BiRefNet · best edges',
+              accent:      'text-purple-400',
               icon: (
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"
                   fill="currentColor" className="w-3.5 h-3.5 shrink-0" aria-hidden="true">
@@ -68,7 +83,7 @@ export default function QualityToggle({ value, onChange, disabled }: QualityTogg
                 }
               `}
             >
-              <span className={active ? 'text-magenta' : 'text-muted'}>
+              <span className={active ? opt.accent : 'text-muted'}>
                 {opt.icon}
               </span>
               <span className="flex flex-col items-start leading-none gap-0.5">
