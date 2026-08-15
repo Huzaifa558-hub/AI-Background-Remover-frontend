@@ -59,7 +59,7 @@ export default function RegisterPage() {
   }
 
   return (
-    <main className="flex-1 flex items-stretch min-h-[calc(100vh-64px)]">
+    <main className="flex-1 flex items-stretch min-h-[calc(100vh-48px)]">
 
       {/* ── Left panel — marketing ──────────────────────────────────────── */}
       <div className="hidden lg:flex lg:w-5/12 relative overflow-hidden
