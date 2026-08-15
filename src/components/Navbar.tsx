@@ -252,27 +252,34 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border glass bg-surface/90">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-4">
 
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2.5 group focus:outline-none shrink-0"
+          className="flex items-center gap-2 group focus:outline-none shrink-0"
           aria-label="AI Background Remover home"
         >
-          <span className="relative w-8 h-8 rounded-lg bg-gradient-to-br from-magenta to-teal
-            flex items-center justify-center shadow-glow-sm shrink-0
-            transition-transform group-hover:scale-105">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="white"
+          <span className="relative w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500
+            dark:from-amber-400 dark:to-pink-500
+            flex items-center justify-center shrink-0
+            transition-transform group-hover:scale-105 shadow-sm">
+            {/* Scissors icon */}
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
               className="w-4 h-4" aria-hidden="true">
-              <path fillRule="evenodd" d="M5.5 2a3.5 3.5 0 101.665 6.58L8.585 10l-1.42 1.42a3.5 3.5 0 101.414 1.414l1.42-1.42 1.42 1.42a3.5 3.5 0 101.414-1.414L11.415 10l1.42-1.42A3.5 3.5 0 0011.17 7.003L10 8.172 8.83 7.003A3.5 3.5 0 005.5 2zm0 2a1.5 1.5 0 110 3 1.5 1.5 0 010-3zm9 9a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM5.5 13a1.5 1.5 0 110 3 1.5 1.5 0 010-3z" clipRule="evenodd" />
+              <circle cx="6" cy="6" r="3" />
+              <circle cx="6" cy="18" r="3" />
+              <line x1="20" y1="4" x2="8.12" y2="15.88" />
+              <line x1="14.47" y1="14.48" x2="20" y2="20" />
+              <line x1="8.12" y1="8.12" x2="12" y2="12" />
             </svg>
           </span>
           {/* Full name on md+, short on small */}
-          <span className="font-display font-bold text-lg leading-none text-primary
-            group-hover:text-magenta transition-colors">
-            <span className="hidden sm:inline">BG<span className="text-magenta">.</span>Remover</span>
-            <span className="sm:hidden text-magenta font-black">BG.</span>
+          <span className="font-display font-bold text-base leading-none text-primary
+            group-hover:text-violet-500 dark:group-hover:text-amber-400 transition-colors">
+            <span className="hidden sm:inline">BG<span className="text-violet-500 dark:text-amber-400">.</span>Remover</span>
+            <span className="sm:hidden text-violet-500 dark:text-amber-400 font-black">BG.</span>
           </span>
         </Link>
 

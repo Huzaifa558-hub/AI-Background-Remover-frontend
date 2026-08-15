@@ -135,7 +135,7 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex-1 flex items-stretch min-h-[calc(100vh-64px)] select-none">
+    <main className="flex-1 flex items-stretch min-h-[calc(100vh-48px)] select-none">
 
       {/* ── Left panel — marketing (Visible on desktop) ───────────────────── */}
       <div className="hidden lg:grid lg:grid-cols-12 gap-8 lg:w-[60%] xl:w-[65%] relative overflow-hidden
@@ -207,13 +207,7 @@ export default function LoginPage() {
             </ul>
           </div>
 
-          {/* Website Pill Link */}
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900 text-white w-fit text-xs font-semibold tracking-wider hover:bg-slate-800 transition-colors cursor-pointer">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
-            </svg>
-            <span>www.removingbackground.io</span>
-          </div>
+
         </div>
 
         {/* Column 2: Drag Slider & Interactive Preview Card */}
@@ -297,41 +291,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Bottom purple/gradient banner inside the card */}
-            <div className="bg-violet-600 dark:bg-surface-raised rounded-2xl p-4 flex flex-col gap-3 border border-violet-500/20 dark:border-border shadow-sm">
-              <p className="text-white/80 dark:text-slate-300 text-[11px] leading-relaxed text-center px-1 font-medium">
-                Perfect for E-commerce, Marketing, Designers, Photographers &amp; More.
-              </p>
-              
-              {/* Category Icons */}
-              <div className="grid grid-cols-4 gap-2 pt-1 border-t border-white/10 dark:border-border/60">
-                <div className="flex flex-col items-center gap-1.5 text-white dark:text-amber-500">
-                  <svg className="w-4 h-4 stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 100-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                  <span className="text-white/80 dark:text-secondary text-[8px] font-bold tracking-wider uppercase text-center">E-commerce</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 text-white dark:text-amber-500">
-                  <svg className="w-4 h-4 stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                  </svg>
-                  <span className="text-white/80 dark:text-secondary text-[8px] font-bold tracking-wider uppercase text-center">Marketing</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 text-white dark:text-amber-500">
-                  <svg className="w-4 h-4 stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                  </svg>
-                  <span className="text-white/80 dark:text-secondary text-[8px] font-bold tracking-wider uppercase text-center">Designers</span>
-                </div>
-                <div className="flex flex-col items-center gap-1.5 text-white dark:text-amber-500">
-                  <svg className="w-4 h-4 stroke-current" fill="none" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span className="text-white/80 dark:text-secondary text-[8px] font-bold tracking-wider uppercase text-center">Photographers</span>
-                </div>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
