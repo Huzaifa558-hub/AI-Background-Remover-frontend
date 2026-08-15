@@ -15,6 +15,7 @@ import ReplaceBgPage from './pages/ReplaceBgPage'
 import SmartCropPage from './pages/SmartCropPage'
 import BatchPage     from './pages/BatchPage'
 import HistoryPage   from './pages/HistoryPage'
+import SettingsPage  from './pages/SettingsPage'
 import NotFoundPage  from './pages/NotFoundPage'
 
 function ChatbotWidgetWrapper() {
@@ -54,6 +55,9 @@ export default function App() {
                 } />
                 <Route path="/history" element={
                   <ProtectedRoute><HistoryPage /></ProtectedRoute>
+                } />
+                <Route path="/settings" element={
+                  <ProtectedRoute><SettingsPage /></ProtectedRoute>
                 } />
 
                 {/* ── Catch-all ──────────────────────────────────────────────── */}
