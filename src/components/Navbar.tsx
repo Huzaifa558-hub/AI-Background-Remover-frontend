@@ -93,14 +93,16 @@ function AppNavLink({ to, label, end, icon }: { to: string; label: string; end?:
 }
 
 // ── Quota bar inside the user dropdown ────────────────────────────────────
-function QuotaBar() {
+// `refreshKey` is bumped each time the dropdown opens so the bar always
+// re-fetches fresh data rather than showing stale counts.
+function QuotaBar({ refreshKey }: { refreshKey: number }) {
   const [quota, setQuota] = useState<{ used: number; limit: number; disabled: boolean } | null>(null)
 
   useEffect(() => {
     axios.get('/api/auth/quota')
       .then(r => setQuota(r.data))
       .catch(() => {/* non-fatal */})
-  }, [])
+  }, [refreshKey]) // re-run whenever the dropdown is opened
 
   if (!quota || quota.disabled || quota.limit === 0) return null
 
@@ -140,6 +142,9 @@ function UserMenu() {
   const { user, logout }         = useAuth()
   const navigate                 = useNavigate()
   const [open, setOpen]          = useState(false)
+  // Incremented each time the dropdown opens — passed to QuotaBar so it
+  // always re-fetches fresh quota data rather than showing stale counts.
+  const [quotaKey, setQuotaKey]  = useState(0)
   const menuRef                  = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -156,10 +161,18 @@ function UserMenu() {
 
   const initial = user.name.charAt(0).toUpperCase()
 
+  function toggleOpen() {
+    setOpen(v => {
+      const next = !v
+      if (next) setQuotaKey(k => k + 1) // bump key on every open
+      return next
+    })
+  }
+
   return (
     <div className="relative" ref={menuRef}>
       <button
-        onClick={() => setOpen(v => !v)}
+        onClick={toggleOpen}
         className="flex items-center gap-2 px-2 py-1.5 rounded-lg
           hover:bg-surface-raised transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-magenta/50"
         aria-haspopup="true"
@@ -203,8 +216,8 @@ function UserMenu() {
             </div>
           </div>
 
-          {/* Quota bar */}
-          <QuotaBar />
+          {/* Quota bar — refreshKey bumped on every open so data is always fresh */}
+          <QuotaBar refreshKey={quotaKey} />
 
           {/* Actions */}
           <div className="p-1" role="none">
@@ -246,13 +259,152 @@ function UserMenu() {
   )
 }
 
+// ── Mobile nav drawer ──────────────────────────────────────────────────────
+function MobileNavDrawer({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) {
+  // Close on Escape
+  useEffect(() => {
+    if (!open) return
+    function handler(e: KeyboardEvent) {
+      if (e.key === 'Escape') onClose()
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [open, onClose])
+
+  // Lock body scroll while open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [open])
+
+  if (!open) return null
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+        aria-hidden="true"
+        onClick={onClose}
+      />
+
+      {/* Drawer panel */}
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation menu"
+        className="fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[85vw]
+          bg-surface border-r border-border shadow-2xl flex flex-col
+          md:hidden animate-slide-in-left"
+      >
+        {/* Drawer header */}
+        <div className="flex items-center justify-between px-4 h-14 border-b border-border shrink-0">
+          <Link
+            to="/"
+            onClick={onClose}
+            className="flex items-center gap-2 focus:outline-none"
+            aria-label="Home"
+          >
+            <span className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500
+              dark:from-amber-400 dark:to-pink-500
+              flex items-center justify-center shrink-0 shadow-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+                className="w-[15px] h-[15px]" aria-hidden="true">
+                <circle cx="6" cy="6" r="2.5" />
+                <circle cx="6" cy="18" r="2.5" />
+                <path d="M8.12 8.12 20 4" />
+                <path d="M8.5 15.5 20 20" />
+                <path d="M8.12 8.12 12 12" />
+                <path d="M12 12 8.5 15.5" />
+              </svg>
+            </span>
+            <span className="font-display font-bold text-base text-primary">
+              BG<span className="text-violet-500 dark:text-amber-400">.</span>Remover
+            </span>
+          </Link>
+
+          <button
+            onClick={onClose}
+            aria-label="Close navigation menu"
+            className="p-1.5 rounded-lg text-muted hover:text-primary hover:bg-surface-raised
+              transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-magenta/50"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+              className="w-4 h-4" aria-hidden="true">
+              <path d="M3.72 3.72a.75.75 0 011.06 0L8 6.94l3.22-3.22a.75.75 0 111.06 1.06L9.06 8l3.22 3.22a.75.75 0 11-1.06 1.06L8 9.06l-3.22 3.22a.75.75 0 01-1.06-1.06L6.94 8 3.72 4.78a.75.75 0 010-1.06z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto px-2 py-3" aria-label="Mobile navigation">
+          {NAV_ITEMS.map(item => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.end}
+              onClick={onClose}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium
+                 transition-colors mb-0.5
+                 focus:outline-none focus-visible:ring-2 focus-visible:ring-magenta/50 ${
+                   isActive
+                     ? 'bg-magenta/10 text-magenta font-semibold'
+                     : 'text-secondary hover:text-primary hover:bg-surface-raised'
+                 }`
+              }
+            >
+              {({ isActive }) => (
+                <>
+                  <span className={isActive ? 'text-magenta' : 'text-muted'}>
+                    {item.icon}
+                  </span>
+                  {item.label}
+                </>
+              )}
+            </NavLink>
+          ))}
+        </nav>
+      </div>
+    </>
+  )
+}
+
 // ── Main Navbar ────────────────────────────────────────────────────────────
 export default function Navbar() {
   const { user, loading } = useAuth()
+  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
     <header className="sticky top-0 z-50 border-b border-border glass bg-surface/90">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-12 flex items-center justify-between gap-4">
+
+        {/* Hamburger button — mobile only, logged-in only */}
+        {user && (
+          <button
+            className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg
+              text-secondary hover:text-primary hover:bg-surface-raised transition-colors
+              focus:outline-none focus-visible:ring-2 focus-visible:ring-magenta/50 shrink-0"
+            aria-label="Open navigation menu"
+            aria-expanded={drawerOpen}
+            aria-controls="mobile-nav-drawer"
+            onClick={() => setDrawerOpen(true)}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"
+              className="w-4 h-4" aria-hidden="true">
+              <path fillRule="evenodd"
+                d="M2 4.75A.75.75 0 012.75 4h10.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 3.5A.75.75 0 012.75 7.5h10.5a.75.75 0 010 1.5H2.75A.75.75 0 012 8.25zm0 3.5a.75.75 0 01.75-.75h10.5a.75.75 0 010 1.5H2.75a.75.75 0 01-.75-.75z"
+                clipRule="evenodd" />
+            </svg>
+          </button>
+        )}
 
         {/* Logo */}
         <Link
@@ -264,7 +416,6 @@ export default function Navbar() {
             dark:from-amber-400 dark:to-pink-500
             flex items-center justify-center shrink-0
             transition-transform group-hover:scale-105 shadow-sm">
-            {/* Scissors icon — clean stroke version */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
               stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
               className="w-[15px] h-[15px]" aria-hidden="true">
@@ -276,7 +427,6 @@ export default function Navbar() {
               <path d="M12 12 8.5 15.5" />
             </svg>
           </span>
-          {/* Full name on md+, short on small */}
           <span className="font-display font-bold text-base leading-none text-primary
             group-hover:text-violet-500 dark:group-hover:text-amber-400 transition-colors">
             <span className="hidden sm:inline">BG<span className="text-violet-500 dark:text-amber-400">.</span>Remover</span>
@@ -284,7 +434,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Feature nav — only when logged in */}
+        {/* Feature nav — desktop only, logged-in only */}
         {user && (
           <nav
             className="hidden md:flex items-center gap-0.5 flex-1 justify-center"
@@ -333,23 +483,12 @@ export default function Navbar() {
 
       </div>
 
-      {/* Mobile bottom nav bar — shown only when logged in on small screens */}
+      {/* Mobile nav drawer — replaces the old horizontal scroll bar */}
       {user && (
-        <nav
-          className="md:hidden flex items-center overflow-x-auto scrollbar-none
-            border-t border-border px-2 py-1 gap-0.5 bg-surface/95"
-          aria-label="Mobile navigation"
-        >
-          {NAV_ITEMS.map(item => (
-            <AppNavLink
-              key={item.to}
-              to={item.to}
-              label={item.label}
-              end={item.end}
-              icon={item.icon}
-            />
-          ))}
-        </nav>
+        <MobileNavDrawer
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        />
       )}
     </header>
   )

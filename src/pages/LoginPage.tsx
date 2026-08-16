@@ -112,7 +112,7 @@ export default function LoginPage() {
     }
     return () => {
       window.removeEventListener('touchend', handleTouchEnd)
-      window.removeEventListener('touchmove', handleTouchMove)
+      window.removeEventListener('touchmove', handleTouchMove, { passive: false } as EventListenerOptions)
     }
   }, [isDragging])
 
@@ -124,10 +124,14 @@ export default function LoginPage() {
       showToast('Successfully signed in.', 'success')
       navigate(from, { replace: true })
     } catch (err) {
-      const msg =
-        axios.isAxiosError(err) && err.response?.data?.detail
-          ? String(err.response.data.detail)
-          : 'Login failed. Please check your credentials.'
+      let msg = 'Login failed. Please check your credentials.'
+      if (axios.isAxiosError(err)) {
+        if (err.response?.data?.detail) {
+          msg = String(err.response.data.detail)
+        } else if (err.code === 'ERR_NETWORK' || !err.response) {
+          msg = 'Cannot reach the server. Make sure the backend is running on port 8000.'
+        }
+      }
       showToast(msg, 'error')
     } finally {
       setBusy(false)

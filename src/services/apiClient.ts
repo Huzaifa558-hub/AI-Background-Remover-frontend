@@ -13,8 +13,10 @@ import axios from 'axios'
  * AuthContext imports this same reference, so all auth state is shared.
  */
 
-// Global base URL — Vite proxy rewrites /api → http://127.0.0.1:8000 in dev.
-axios.defaults.baseURL = ''
+// Global base URL — reads VITE_API_BASE_URL at build time so production
+// deployments can point at a different origin (e.g. https://api.example.com).
+// Falls back to '' in development, where Vite's proxy rewrites /api → 8000.
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ?? ''
 
 // Background removal with BiRefNet (quality mode) can take 60–120s on first
 // load while the model downloads and warms up. Use a generous timeout.

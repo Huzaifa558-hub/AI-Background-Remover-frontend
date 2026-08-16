@@ -1,82 +1,19 @@
 import { useState } from 'react'
 import type { HistoryItem, OperationType } from '../hooks/useHistory'
+import { OPERATION_LABELS } from '../hooks/useHistory'
 import ExportModal from './ExportModal'
-
-// ── Badge config ─────────────────────────────────────────────────────────────
-
-const BADGE: Record<OperationType, { label: string; className: string }> = {
-  remove_bg:  { label: 'Remove BG',   className: 'bg-magenta/15  text-magenta  border-magenta/30'  },
-  enhance:    { label: 'Enhanced',    className: 'bg-teal/15     text-teal     border-teal/30'     },
-  replace_bg: { label: 'Replaced BG', className: 'bg-blue/15    text-blue     border-blue/30'     },
-  smart_crop: { label: 'Smart Crop',  className: 'bg-amber/15   text-amber    border-amber/30'    },
-}
-
-// Fallback colours using raw Tailwind when custom tokens aren't available
-const BADGE_FALLBACK: Record<OperationType, { label: string; className: string }> = {
-  remove_bg:  { label: 'Remove BG',   className: 'bg-pink-500/15   text-pink-400   border-pink-500/30'   },
-  enhance:    { label: 'Enhanced',    className: 'bg-teal-500/15   text-teal-400   border-teal-500/30'   },
-  replace_bg: { label: 'Replaced BG', className: 'bg-blue-500/15  text-blue-400   border-blue-500/30'   },
-  smart_crop: { label: 'Smart Crop',  className: 'bg-amber-500/15 text-amber-400  border-amber-500/30'  },
-}
-
-function TypeBadge({ type }: { type: OperationType }) {
-  // Try the design-token version; fall back to plain Tailwind colours
-  const cfg = BADGE[type] ?? BADGE_FALLBACK[type]
-  return (
-    <span
-      className={`
-        absolute top-2 left-2 z-10
-        inline-flex items-center px-1.5 py-0.5 rounded-md
-        text-[10px] font-semibold leading-none
-        border backdrop-blur-sm
-        ${cfg.className}
-      `}
-    >
-      {cfg.label}
-    </span>
-  )
-}
-
-// ── Sub-label below the filename ─────────────────────────────────────────────
-
-function SubLabel({ item }: { item: HistoryItem }) {
-  switch (item.operation_type) {
-    case 'remove_bg':
-      return item.quality
-        ? <span className="capitalize">{item.quality} quality</span>
-        : null
-
-    case 'enhance': {
-      const s = item.settings ?? {}
-      const parts: string[] = []
-      if (s.denoise)  parts.push('Denoised')
-      if (s.auto_wb)  parts.push('Auto WB')
-      if (!parts.length) parts.push('Enhanced')
-      return <span>{parts.join(' · ')}</span>
-    }
-
-    case 'replace_bg':
-      return item.bg_type
-        ? <span className="capitalize">{item.bg_type} background</span>
-        : null
-
-    case 'smart_crop': {
-      const ratio = (item.settings as Record<string, string> | undefined)?.aspect_ratio
-      return ratio && ratio !== 'free'
-        ? <span>{ratio} crop</span>
-        : <span>Smart crop</span>
-    }
-
-    default:
-      return null
-  }
-}
-
-// ── Card ─────────────────────────────────────────────────────────────────────
 
 interface HistoryCardProps {
   item: HistoryItem
   onDelete: (uploadId: string) => void
+}
+
+/** Tailwind colour classes per operation type */
+const BADGE_STYLES: Record<OperationType, string> = {
+  remove_bg:  'bg-teal/15 text-teal border-teal/30',
+  enhance:    'bg-amber-400/15 text-amber-500 border-amber-400/30',
+  replace_bg: 'bg-violet-500/15 text-violet-500 border-violet-500/30',
+  smart_crop: 'bg-sky-500/15 text-sky-500 border-sky-500/30',
 }
 
 export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
@@ -100,7 +37,8 @@ export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
     }
   }
 
-  const subLabel = <SubLabel item={item} />
+  const badgeClass = BADGE_STYLES[item.operation_type] ?? 'bg-border/20 text-secondary border-border'
+  const badgeLabel = OPERATION_LABELS[item.operation_type] ?? item.operation_type
 
   return (
     <>
@@ -112,15 +50,26 @@ export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
       ">
         {/* Preview */}
         <div className="relative bg-checker aspect-video flex items-center justify-center overflow-hidden">
-          {/* Operation type badge */}
-          <TypeBadge type={item.operation_type} />
-
           <img
             src={downloadUrl}
             alt={`Result for ${item.original_name}`}
             className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
             loading="lazy"
           />
+
+          {/* Operation type badge — top-left corner */}
+          <span
+            className={`
+              absolute top-2 left-2
+              inline-flex items-center px-2 py-0.5 rounded-full
+              text-[10px] font-semibold tracking-wide
+              border backdrop-blur-sm
+              ${badgeClass}
+            `}
+            aria-label={`Operation: ${badgeLabel}`}
+          >
+            {badgeLabel}
+          </span>
 
           {/* Hover overlay with quick export */}
           <div className="
@@ -151,21 +100,13 @@ export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
         </div>
 
         {/* Info */}
-        <div className="p-3 flex flex-col gap-1.5 flex-1">
+        <div className="p-3 flex flex-col gap-2 flex-1">
           <p
             className="text-sm font-medium text-primary truncate leading-snug"
             title={item.original_name}
           >
             {item.original_name}
           </p>
-
-          {/* Operation-specific sub-label */}
-          {subLabel && (
-            <p className="text-[11px] text-secondary truncate leading-none">
-              {subLabel}
-            </p>
-          )}
-
           <p className="text-[11px] text-muted flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14" fill="currentColor" className="w-3 h-3 shrink-0" aria-hidden="true">
               <path fillRule="evenodd" d="M7 1a6 6 0 100 12A6 6 0 007 1zM6.25 4.75a.75.75 0 011.5 0v2.5l1.5 1.5a.75.75 0 01-1.06 1.06l-1.75-1.75a.75.75 0 01-.22-.53v-2.78z" clipRule="evenodd"/>
@@ -175,6 +116,7 @@ export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
 
           {/* Actions */}
           <div className="flex items-center gap-2 mt-auto pt-1">
+            {/* Export button — opens modal */}
             <button
               onClick={() => setExportOpen(true)}
               className="
@@ -213,6 +155,7 @@ export default function HistoryCard({ item, onDelete }: HistoryCardProps) {
         </div>
       </article>
 
+      {/* Export modal — shared for both hover and action bar triggers */}
       <ExportModal
         downloadUrl={downloadUrl}
         filename={item.output_filename}
