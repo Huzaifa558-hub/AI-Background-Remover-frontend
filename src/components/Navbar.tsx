@@ -264,15 +264,16 @@ export default function Navbar() {
             dark:from-amber-400 dark:to-pink-500
             flex items-center justify-center shrink-0
             transition-transform group-hover:scale-105 shadow-sm">
-            {/* Scissors icon */}
+            {/* Scissors icon — clean stroke version */}
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-              stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-              className="w-4 h-4" aria-hidden="true">
-              <circle cx="6" cy="6" r="3" />
-              <circle cx="6" cy="18" r="3" />
-              <line x1="20" y1="4" x2="8.12" y2="15.88" />
-              <line x1="14.47" y1="14.48" x2="20" y2="20" />
-              <line x1="8.12" y1="8.12" x2="12" y2="12" />
+              stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+              className="w-[15px] h-[15px]" aria-hidden="true">
+              <circle cx="6" cy="6" r="2.5" />
+              <circle cx="6" cy="18" r="2.5" />
+              <path d="M8.12 8.12 20 4" />
+              <path d="M8.5 15.5 20 20" />
+              <path d="M8.12 8.12 12 12" />
+              <path d="M12 12 8.5 15.5" />
             </svg>
           </span>
           {/* Full name on md+, short on small */}
