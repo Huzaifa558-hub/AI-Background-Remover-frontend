@@ -48,10 +48,14 @@ export default function RegisterPage() {
       showToast('Account created. Welcome!', 'success')
       navigate('/', { replace: true })
     } catch (err) {
-      const msg =
-        axios.isAxiosError(err) && err.response?.data?.detail
-          ? String(err.response.data.detail)
-          : 'Registration failed. Please try again.'
+      let msg = 'Registration failed. Please try again.'
+      if (axios.isAxiosError(err)) {
+        if (err.response?.data?.detail) {
+          msg = String(err.response.data.detail)
+        } else if (err.code === 'ERR_NETWORK' || !err.response) {
+          msg = 'Cannot reach the server. Make sure the backend is running on port 8000.'
+        }
+      }
       showToast(msg, 'error')
     } finally {
       setBusy(false)

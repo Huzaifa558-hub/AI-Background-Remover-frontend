@@ -22,7 +22,7 @@ export default function QualityToggle({ value, onChange, disabled }: QualityTogg
         role="radiogroup"
         aria-label="Background removal quality"
         className={`
-          inline-flex rounded-lg border border-border bg-surface-raised p-0.5 gap-0.5
+          flex flex-col rounded-lg border border-border bg-surface-raised p-0.5 gap-0.5
           ${disabled ? 'opacity-50 pointer-events-none' : ''}
         `}
       >
@@ -75,20 +75,20 @@ export default function QualityToggle({ value, onChange, disabled }: QualityTogg
               onClick={() => onChange(opt.id)}
               disabled={disabled}
               className={`
-                flex items-center gap-2 px-3 py-2 rounded-md text-sm
-                transition-all duration-150 select-none
+                w-full flex items-center gap-3 px-3 py-2.5 rounded-md text-sm
+                transition-all duration-150 select-none text-left
                 ${active
                   ? 'bg-surface shadow-sm text-primary font-semibold border border-border'
                   : 'text-secondary hover:text-primary'
                 }
               `}
             >
-              <span className={active ? opt.accent : 'text-muted'}>
+              <span className={`shrink-0 ${active ? opt.accent : 'text-muted'}`}>
                 {opt.icon}
               </span>
-              <span className="flex flex-col items-start leading-none gap-0.5">
+              <span className="flex flex-col items-start leading-none gap-0.5 min-w-0">
                 <span>{opt.label}</span>
-                <span className={`text-[10px] font-normal ${active ? 'text-muted' : 'text-muted/60'}`}>
+                <span className={`text-[10px] font-normal truncate w-full ${active ? 'text-muted' : 'text-muted/60'}`}>
                   {opt.description}
                 </span>
               </span>
