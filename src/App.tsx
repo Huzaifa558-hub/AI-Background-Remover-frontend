@@ -17,6 +17,7 @@ import BatchPage     from './pages/BatchPage'
 import HistoryPage   from './pages/HistoryPage'
 import SettingsPage  from './pages/SettingsPage'
 import NotFoundPage  from './pages/NotFoundPage'
+import RecolorPage   from './pages/RecolorPage'
 
 function ChatbotWidgetWrapper() {
   const { user } = useAuth()
@@ -52,6 +53,9 @@ export default function App() {
                 } />
                 <Route path="/batch" element={
                   <ProtectedRoute><BatchPage /></ProtectedRoute>
+                } />
+                <Route path="/recolor" element={
+                  <ProtectedRoute><RecolorPage /></ProtectedRoute>
                 } />
                 <Route path="/history" element={
                   <ProtectedRoute><HistoryPage /></ProtectedRoute>
